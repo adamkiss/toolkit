@@ -1,0 +1,18 @@
+{
+    "name": "adamkiss/toolkit",
+    "description": "Standalone copy of Toolkit parts of Kirby CMS",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Adamkiss\\Toolkit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adam Kiss",
+            "email": "iam@adamkiss.com"
+        }
+    ],
+    "require": {}
+}
