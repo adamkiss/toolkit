@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
-use Kirby\Exception\BadMethodCallException;
-use Kirby\Exception\Exception;
-use Kirby\Filesystem\F;
+use Adamkiss\Toolkit\Exception\BadMethodCallException;
+use Adamkiss\Toolkit\Exception\Exception;
+use Adamkiss\Toolkit\Filesystem\F;
 
 /**
  * Reader and write of PHP files with data in a returned array

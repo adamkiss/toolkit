@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Http\Request;
+namespace Adamkiss\Toolkit\Http\Request;
 
 use SensitiveParameter;
 use Stringable;

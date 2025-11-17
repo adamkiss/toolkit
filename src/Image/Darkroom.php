@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
 use Exception;
-use Kirby\Image\Darkroom\GdLib;
-use Kirby\Image\Darkroom\ImageMagick;
-use Kirby\Image\Darkroom\Imagick;
+use Adamkiss\Toolkit\Image\Darkroom\GdLib;
+use Adamkiss\Toolkit\Image\Darkroom\ImageMagick;
+use Adamkiss\Toolkit\Image\Darkroom\Imagick;
 
 /**
  * A wrapper around resizing and cropping

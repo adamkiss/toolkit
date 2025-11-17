@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\Str;
 use SimpleXMLElement;
 
 /**

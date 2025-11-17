@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
-use Kirby\Toolkit\Collection;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Collection;
+use Adamkiss\Toolkit\Str;
 
 /**
  * A wrapper around an URL path
@@ -15,7 +15,7 @@ use Kirby\Toolkit\Str;
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
  *
- * @extends \Kirby\Toolkit\Collection<string>
+ * @extends \Adamkiss\Toolkit\Collection<string>
  */
 class Path extends Collection
 {

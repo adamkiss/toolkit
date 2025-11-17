@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
 use Kirby\Cms\App;
-use Kirby\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
 
 /**
  * Simple Wrapper around the Symfony or Spyc YAML class

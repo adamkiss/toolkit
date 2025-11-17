@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Http\Exceptions;
+namespace Adamkiss\Toolkit\Http\Exceptions;
 
 /**
  * NextRouteException

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Exception;
+namespace Adamkiss\Toolkit\Exception;
 
 /**
  * Thrown when a method was called that does not exist

@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Http\Request\Auth;
+namespace Adamkiss\Toolkit\Http\Request\Auth;
 
 use Kirby\Cms\App;
-use Kirby\Http\Request\Auth;
-use Kirby\Session\Session;
+use Adamkiss\Toolkit\Http\Request\Auth;
+use Adamkiss\Toolkit\Session\Session;
 
 /**
  * Authentication data using Kirby's session

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
 use Stringable;
 

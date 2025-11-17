@@ -1,13 +1,13 @@
 <?php
 
-namespace Kirby\Session;
+namespace Adamkiss\Toolkit\Session;
 
-use Kirby\Exception\Exception;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Exception\LogicException;
-use Kirby\Http\Cookie;
-use Kirby\Http\Request;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\Exception;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Http\Cookie;
+use Adamkiss\Toolkit\Http\Request;
+use Adamkiss\Toolkit\Str;
 use Throwable;
 
 /**
@@ -31,7 +31,7 @@ class Sessions
 	/**
 	 * Creates a new Sessions instance
 	 *
-	 * @param \Kirby\Session\SessionStore|string $store SessionStore object or a path to the storage directory (uses the FileSessionStore)
+	 * @param \Adamkiss\Toolkit\Session\SessionStore|string $store SessionStore object or a path to the storage directory (uses the FileSessionStore)
 	 * @param array $options Optional additional options:
 	 *                       - `mode`: Default token transmission mode (cookie, header or manual); defaults to `cookie`
 	 *                       - `cookieDomain`: Domain to set the cookie to (this disables the cookie path restriction); defaults to none (default browser behavior)
@@ -125,9 +125,9 @@ class Sessions
 	 * - In `header` mode: Gets the session from the `Authorization` request header
 	 * - In `manual` mode: Fails and throws an Exception
 	 *
-	 * @return \Kirby\Session\Session|null Either the current session or null in case there isn't one
-	 * @throws \Kirby\Exception\Exception
-	 * @throws \Kirby\Exception\LogicException
+	 * @return \Adamkiss\Toolkit\Session\Session|null Either the current session or null in case there isn't one
+	 * @throws \Adamkiss\Toolkit\Exception\Exception
+	 * @throws \Adamkiss\Toolkit\Exception\LogicException
 	 */
 	public function current(): Session|null
 	{
@@ -163,7 +163,7 @@ class Sessions
 	 * - Tries to get the session from the cookie
 	 * - Otherwise returns null
 	 *
-	 * @return \Kirby\Session\Session|null Either the current session or null in case there isn't one
+	 * @return \Adamkiss\Toolkit\Session\Session|null Either the current session or null in case there isn't one
 	 */
 	public function currentDetected(): Session|null
 	{
@@ -229,7 +229,7 @@ class Sessions
 	 * session or a session with a regenerated token
 	 *
 	 * @internal
-	 * @param \Kirby\Session\Session $session Session instance to push to the cache
+	 * @param \Adamkiss\Toolkit\Session\Session $session Session instance to push to the cache
 	 */
 	public function updateCache(Session $session): void
 	{

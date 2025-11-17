@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
 use Kirby\Cms\Language;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Str;
 use Stringable;
 
 /**

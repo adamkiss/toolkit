@@ -1,17 +1,17 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Kirby\Cms\App;
-use Kirby\Http\Request\Auth;
-use Kirby\Http\Request\Auth\BasicAuth;
-use Kirby\Http\Request\Auth\BearerAuth;
-use Kirby\Http\Request\Auth\SessionAuth;
-use Kirby\Http\Request\Body;
-use Kirby\Http\Request\Files;
-use Kirby\Http\Request\Query;
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Http\Request\Auth;
+use Adamkiss\Toolkit\Http\Request\Auth\BasicAuth;
+use Adamkiss\Toolkit\Http\Request\Auth\BearerAuth;
+use Adamkiss\Toolkit\Http\Request\Auth\SessionAuth;
+use Adamkiss\Toolkit\Http\Request\Body;
+use Adamkiss\Toolkit\Http\Request\Files;
+use Adamkiss\Toolkit\Http\Request\Query;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\Str;
 
 /**
  * The `Request` class provides

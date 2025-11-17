@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Text;
+namespace Adamkiss\Toolkit\Text;
 
 use Exception;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Str;
 
 /**
  * Parses and converts custom kirbytags in any

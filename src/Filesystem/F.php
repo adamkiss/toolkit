@@ -1,13 +1,13 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
 use Exception;
 use IntlDateFormatter;
 use Kirby\Cms\Helpers;
-use Kirby\Http\Response;
-use Kirby\Toolkit\I18n;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Http\Response;
+use Adamkiss\Toolkit\I18n;
+use Adamkiss\Toolkit\Str;
 use Throwable;
 use ZipArchive;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Image\Darkroom;
+namespace Adamkiss\Toolkit\Image\Darkroom;
 
 use Exception;
 use Imagick as Image;
-use Kirby\Image\Darkroom;
-use Kirby\Image\Focus;
+use Adamkiss\Toolkit\Image\Darkroom;
+use Adamkiss\Toolkit\Image\Focus;
 
 /**
  * Imagick darkroom driver

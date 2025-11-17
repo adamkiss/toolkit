@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Exception;
+namespace Adamkiss\Toolkit\Exception;
 
-use Kirby\Http\Environment;
-use Kirby\Toolkit\I18n;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Http\Environment;
+use Adamkiss\Toolkit\I18n;
+use Adamkiss\Toolkit\Str;
 use Throwable;
 
 /**

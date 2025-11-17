@@ -1,15 +1,15 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
 use Kirby\Cms\App;
-use Kirby\Exception\BadMethodCallException;
-use Kirby\Image\Image;
+use Adamkiss\Toolkit\Exception\BadMethodCallException;
+use Adamkiss\Toolkit\Image\Image;
 
 /**
  * Trait for all objects that represent an asset file.
  * Adds `::asset()` method which returns either a
- * `Kirby\Filesystem\File` or `Kirby\Image\Image` object.
+ * `Adamkiss\Toolkit\Filesystem\File` or `Adamkiss\Toolkit\Image\Image` object.
  * Proxies method calls to this object.
  * @since 3.6.0
  *
@@ -48,7 +48,7 @@ trait IsFile
 	/**
 	 * Magic caller for asset methods
 	 *
-	 * @throws \Kirby\Exception\BadMethodCallException
+	 * @throws \Adamkiss\Toolkit\Exception\BadMethodCallException
 	 */
 	public function __call(string $method, array $arguments = []): mixed
 	{

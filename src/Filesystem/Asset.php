@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
 use Kirby\Cms\FileModifications;
 use Kirby\Cms\HasMethods;
-use Kirby\Exception\BadMethodCallException;
+use Adamkiss\Toolkit\Exception\BadMethodCallException;
 
 /**
  * Anything in your public path can be converted
@@ -49,7 +49,7 @@ class Asset
 	/**
 	 * Magic caller for asset methods
 	 *
-	 * @throws \Kirby\Exception\BadMethodCallException
+	 * @throws \Adamkiss\Toolkit\Exception\BadMethodCallException
 	 */
 	public function __call(string $method, array $arguments = []): mixed
 	{

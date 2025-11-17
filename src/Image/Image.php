@@ -1,12 +1,12 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
 use Kirby\Cms\FileVersion;
 use Kirby\Content\Content;
-use Kirby\Exception\LogicException;
-use Kirby\Filesystem\File;
-use Kirby\Toolkit\Html;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Filesystem\File;
+use Adamkiss\Toolkit\Html;
 
 /**
  * A representation of an image file
@@ -14,7 +14,7 @@ use Kirby\Toolkit\Html;
  * a connection to our darkroom classes to resize/crop
  * images.
  *
- * Extends the `Kirby\Filesystem\File` class with
+ * Extends the `Adamkiss\Toolkit\Filesystem\File` class with
  * those image-specific methods.
  *
  * @package   Kirby Image

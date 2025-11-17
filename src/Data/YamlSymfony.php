@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
 use Kirby\Cms\App;
-use Kirby\Toolkit\A;
+use Adamkiss\Toolkit\A;
 use Symfony\Component\Yaml\Yaml as Symfony;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Exception;
+namespace Adamkiss\Toolkit\Exception;
 
 /**
  * Thrown to trigger the CMS error page

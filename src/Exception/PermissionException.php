@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Exception;
+namespace Adamkiss\Toolkit\Exception;
 
 /**
  * Thrown when the current user has insufficient

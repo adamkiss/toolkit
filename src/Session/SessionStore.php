@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Session;
+namespace Adamkiss\Toolkit\Session;
 
 /**
  * @package   Kirby Session

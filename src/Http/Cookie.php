@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Kirby\Cms\App;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Str;
 
 /**
  * The `Cookie` class helps you to

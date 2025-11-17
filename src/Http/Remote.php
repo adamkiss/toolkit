@@ -1,13 +1,13 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use CurlHandle;
 use Exception;
 use Kirby\Cms\App;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Filesystem\F;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Filesystem\F;
+use Adamkiss\Toolkit\Str;
 use stdClass;
 
 /**

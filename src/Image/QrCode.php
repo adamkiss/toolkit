@@ -1,12 +1,12 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
 use Closure;
 use GdImage;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Exception\LogicException;
-use Kirby\Filesystem\F;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Filesystem\F;
 use Stringable;
 
 /**

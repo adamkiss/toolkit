@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Image\Darkroom;
+namespace Adamkiss\Toolkit\Image\Darkroom;
 
 use claviska\SimpleImage;
-use Kirby\Filesystem\Mime;
-use Kirby\Image\Darkroom;
-use Kirby\Image\Focus;
+use Adamkiss\Toolkit\Filesystem\Mime;
+use Adamkiss\Toolkit\Image\Darkroom;
+use Adamkiss\Toolkit\Image\Focus;
 
 /**
  * GdLib darkroom driver

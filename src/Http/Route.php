@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Closure;
 

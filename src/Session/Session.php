@@ -1,16 +1,16 @@
 <?php
 
-namespace Kirby\Session;
+namespace Adamkiss\Toolkit\Session;
 
-use Kirby\Exception\BadMethodCallException;
-use Kirby\Exception\Exception;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Exception\LogicException;
-use Kirby\Exception\NotFoundException;
-use Kirby\Http\Cookie;
-use Kirby\Http\Url;
-use Kirby\Toolkit\Str;
-use Kirby\Toolkit\SymmetricCrypto;
+use Adamkiss\Toolkit\Exception\BadMethodCallException;
+use Adamkiss\Toolkit\Exception\Exception;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Exception\NotFoundException;
+use Adamkiss\Toolkit\Http\Cookie;
+use Adamkiss\Toolkit\Http\Url;
+use Adamkiss\Toolkit\Str;
+use Adamkiss\Toolkit\SymmetricCrypto;
 
 /**
  * @package   Kirby Session
@@ -48,7 +48,7 @@ class Session
 	/**
 	 * Creates a new Session instance
 	 *
-	 * @param \Kirby\Session\Sessions $sessions Parent sessions object
+	 * @param \Adamkiss\Toolkit\Session\Sessions $sessions Parent sessions object
 	 * @param string|null $token Session token or null for a new session
 	 * @param array $options Optional additional options:
 	 *                       - `mode`: Token transmission mode (cookie or manual); defaults to `cookie`
@@ -287,7 +287,7 @@ class Session
 	/**
 	 * Returns the session data object
 	 *
-	 * @return \Kirby\Session\SessionData
+	 * @return \Adamkiss\Toolkit\Session\SessionData
 	 */
 	public function data()
 	{

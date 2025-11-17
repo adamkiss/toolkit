@@ -1,12 +1,12 @@
 <?php
 
-namespace Kirby\Filesystem;
+namespace Adamkiss\Toolkit\Filesystem;
 
 use Exception;
 use Kirby\Cms\App;
 use Kirby\Cms\Helpers;
 use Kirby\Cms\Page;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Str;
 use Throwable;
 
 /**

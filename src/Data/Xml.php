@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Toolkit\Xml as XmlConverter;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Xml as XmlConverter;
 
 /**
  * Simple Wrapper around the XML parser of the Toolkit

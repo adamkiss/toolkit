@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Image\Darkroom;
+namespace Adamkiss\Toolkit\Image\Darkroom;
 
 use Exception;
-use Kirby\Filesystem\F;
-use Kirby\Image\Darkroom;
-use Kirby\Image\Focus;
+use Adamkiss\Toolkit\Filesystem\F;
+use Adamkiss\Toolkit\Image\Darkroom;
+use Adamkiss\Toolkit\Image\Focus;
 
 /**
  * Legacy ImageMagick driver using the convert CLI

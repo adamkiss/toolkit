@@ -1,8 +1,8 @@
 <?php
 
-namespace Kirby\Http\Request\Auth;
+namespace Adamkiss\Toolkit\Http\Request\Auth;
 
-use Kirby\Http\Request\Auth;
+use Adamkiss\Toolkit\Http\Request\Auth;
 
 /**
  * Bearer token authentication data

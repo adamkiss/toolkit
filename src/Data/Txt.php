@@ -1,10 +1,10 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\Str;
 
 /**
  * Kirby Txt Data Handler

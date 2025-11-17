@@ -1,8 +1,8 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
-use Kirby\Filesystem\F;
+use Adamkiss\Toolkit\Filesystem\F;
 
 /**
  * The Header class provides methods

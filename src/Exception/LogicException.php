@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Exception;
+namespace Adamkiss\Toolkit\Exception;
 
 /**
  * Thrown for invalid requests that can't work out

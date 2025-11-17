@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Kirby\Cms\App;
-use Kirby\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
 use SensitiveParameter;
 use Stringable;
 use Throwable;

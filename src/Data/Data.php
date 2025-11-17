@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
-use Kirby\Exception\Exception;
-use Kirby\Filesystem\F;
+use Adamkiss\Toolkit\Exception\Exception;
+use Adamkiss\Toolkit\Filesystem\F;
 use Throwable;
 
 /**

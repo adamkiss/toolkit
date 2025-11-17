@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Session;
+namespace Adamkiss\Toolkit\Session;
 
-use Kirby\Exception\LogicException;
-use Kirby\Toolkit\A;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\A;
 
 /**
  * The session object can be used to
@@ -22,7 +22,7 @@ class SessionData
 	 * Creates a new SessionData instance
 	 *
 	 * @codeCoverageIgnore
-	 * @param \Kirby\Session\Session $session Session object this data belongs to
+	 * @param \Adamkiss\Toolkit\Session\Session $session Session object this data belongs to
 	 * @param array $data Currently stored session data
 	 */
 	public function __construct(

@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\V;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\V;
 
 /**
  * Reads exif data from a given image object

@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Closure;
 use Exception;
-use Kirby\Exception\LogicException;
-use Kirby\Filesystem\F;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Filesystem\F;
 use Stringable;
 
 /**

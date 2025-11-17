@@ -1,8 +1,8 @@
 <?php
 
-namespace Kirby\Data;
+namespace Adamkiss\Toolkit\Data;
 
-use Kirby\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
 
 /**
  * Simple Wrapper around json_encode and json_decode

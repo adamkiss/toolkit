@@ -1,8 +1,8 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Str;
 
 /**
  * Handles Internationalized Domain Names

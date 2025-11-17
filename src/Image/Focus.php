@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Image;
+namespace Adamkiss\Toolkit\Image;
 
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\Str;
 
 /**
  * @package   Kirby Image

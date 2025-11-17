@@ -1,9 +1,9 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
-use Kirby\Toolkit\Obj;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Obj;
+use Adamkiss\Toolkit\Str;
 use Stringable;
 
 /**

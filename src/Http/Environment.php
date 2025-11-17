@@ -1,12 +1,12 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Kirby\Cms\App;
-use Kirby\Exception\InvalidArgumentException;
-use Kirby\Filesystem\F;
-use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Filesystem\F;
+use Adamkiss\Toolkit\A;
+use Adamkiss\Toolkit\Str;
 
 /**
  * The environment object takes care of

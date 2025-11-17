@@ -1,11 +1,11 @@
 <?php
 
-namespace Kirby\Http;
+namespace Adamkiss\Toolkit\Http;
 
 use Closure;
 use Exception;
 use InvalidArgumentException;
-use Kirby\Toolkit\A;
+use Adamkiss\Toolkit\A;
 
 /**
  * @package   Kirby Http

@@ -1,14 +1,14 @@
 <?php
 
-namespace Kirby\Session;
+namespace Adamkiss\Toolkit\Session;
 
 use FilesystemIterator;
-use Kirby\Exception\Exception;
-use Kirby\Exception\LogicException;
-use Kirby\Exception\NotFoundException;
-use Kirby\Filesystem\Dir;
-use Kirby\Filesystem\F;
-use Kirby\Toolkit\Str;
+use Adamkiss\Toolkit\Exception\Exception;
+use Adamkiss\Toolkit\Exception\LogicException;
+use Adamkiss\Toolkit\Exception\NotFoundException;
+use Adamkiss\Toolkit\Filesystem\Dir;
+use Adamkiss\Toolkit\Filesystem\F;
+use Adamkiss\Toolkit\Str;
 
 /**
  * @package   Kirby Session

@@ -1,14 +1,14 @@
 <?php
 
-namespace Kirby\Text;
+namespace Adamkiss\Toolkit\Text;
 
 use AllowDynamicProperties;
 use Closure;
 use Kirby\Cms\App;
 use Kirby\Cms\File;
 use Kirby\Cms\ModelWithContent;
-use Kirby\Exception\BadMethodCallException;
-use Kirby\Exception\InvalidArgumentException;
+use Adamkiss\Toolkit\Exception\BadMethodCallException;
+use Adamkiss\Toolkit\Exception\InvalidArgumentException;
 use Kirby\Uuid\Uri as UuidUri;
 use Kirby\Uuid\Uuid;
 
