@@ -5,8 +5,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Adamkiss\\Toolkit\\": "src/"
-        }
+            "Adamkiss\\Toolkit\\": "src/",
+			"Adamkiss\\Toolkit\\Tests\\": "tests/"
+        },
+		"files": [
+			"lib/escaper.php"
+		]
     },
     "authors": [
         {
@@ -14,5 +18,15 @@
             "email": "iam@adamkiss.com"
         }
     ],
-    "require": {}
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+	"scripts": {
+		"test": "pest"
+	},
+    "require": {
+        "claviska/simpleimage": "^4.3"
+    }
 }
