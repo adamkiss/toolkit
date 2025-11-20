@@ -24,12 +24,10 @@
         }
     },
 	"scripts": {
-		"test": "pest"
+		"dist": "php build/build.php",
+		"test": "composer run dist && php tests/test-src.php"
 	},
     "require": {
         "claviska/simpleimage": "^4.3"
-    },
-    "require-dev": {
-        "pestphp/pest": "^4.1"
     }
 }
