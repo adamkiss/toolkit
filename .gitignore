@@ -2,3 +2,5 @@
 node_modules
 vendor
 .coverage
+/dist/**
+!/dist/.gitkeep

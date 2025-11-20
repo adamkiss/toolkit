@@ -28,5 +28,8 @@
 	},
     "require": {
         "claviska/simpleimage": "^4.3"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.1"
     }
 }
