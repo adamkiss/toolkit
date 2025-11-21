@@ -31,3 +31,9 @@ jobs:
       with:
         name: ${{ env.artifact_name }}
         path: ${{ env.artifact_path }}
+    - name: Add file to the latest tag
+      uses: softprops/action-gh-release@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: ${{ env.artifact_path }}
+        overwrite: 'true'
