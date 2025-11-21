@@ -24,9 +24,10 @@ jobs:
     - name: Capture the toolkit build name/file
       run: |
         artifact_name=`ls dist/*.php | tr -d '\n'`
-        echo "artifact_name=$artifact_name" >> $GITHUB_ENV
+        echo "artifact_path=$artifact_name" >> $GITHUB_ENV
+        echo "artifact_name=$(basename $artifact_name)" >> $GITHUB_ENV
     - name: Upload Built Toolkit
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.artifact_name }}
-        path: ${{ env.artifact_name }}
+        path: ${{ env.artifact_path }}
