@@ -133,4 +133,7 @@ $parts = array_merge($parts, array_values($files));
 /**
  * Build the single file
  */
-F::write(Build::ROOT . '/dist/toolkit.php', A::join($parts, "\n"));
+F::write(
+	sprintf('%s/dist/toolkit-%s.php', Build::ROOT, json_decode(F::read(Build::ROOT . '/composer.json'))->version),
+	A::join($parts, "\n")
+);

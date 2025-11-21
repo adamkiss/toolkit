@@ -1,0 +1,32 @@
+name: Generate build version
+
+on:
+  push:
+    tags:
+      - 0.*
+      - 1.*
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install Dependencies
+      run: |
+        composer install -no
+    - name: Build
+      run: |
+        composer run dist
+    - name: Capture the toolkit build name/file
+      run: |
+        artifact_name=`ls dist/*.php | tr -d '\n'`
+        echo "artifact_name=$artifact_name" >> $GITHUB_ENV
+    - name: Upload Built Toolkit
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.artifact_name }}
+        path: ${{ env.artifact_name }}
