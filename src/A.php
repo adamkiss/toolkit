@@ -466,7 +466,36 @@ class A
 	 */
 	public static function map(array $array, callable $map): array
 	{
-		return array_map($map, $array, array_keys($array));
+		return array_map($map, $array);
+	}
+
+	/**
+	 * Mapping function that also maps/remaps with keys. The callable/closure receives
+	 * the value and the key, and must return an array<key, value> pair, or null to skip the item.
+	 *
+	 * @param array $array The source array
+	 * @param callable(mixed $value, int|string $key):array<mixed, mixed>|null $map
+	 * @return array The mapped result array
+	 */
+	public static function mapWithKeys(array $array, callable $map): array
+	{
+		$result = [];
+
+		foreach ($array as $k => $v) {
+			$r = $map($v, $k);
+			if ($r === null) {
+				continue;
+			}
+			if (!is_array($r) || count($r) !== 2) {
+				throw new InvalidArgumentException(
+					message: 'The mapping function must return an array with exactly two elements: [key, value]'
+				);
+			}
+
+			$result[$r[0]] = $r[1];
+		}
+
+		return $result;
 	}
 
 	public const MERGE_OVERWRITE = 0;

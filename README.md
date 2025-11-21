@@ -25,7 +25,8 @@ This is a running list of changes implemented/maintained in the fork
 	- includes dependencies
 	- includes mocks for proprietary parts of Kirby called from toolkit (those toolkit parts won't work)
 	- outputs `./dist/toolkit-{version}.php`
-- modified `Adamkiss\Toolkit\A::map` to provide keys along with values to the mapping closure
+- added `Adamkiss\Toolkit\A::mapWithKeys` to map an array with keys and provide filtering at the same time
+- ~~modified `Adamkiss\Toolkit\A::map` to provide keys along with values to the mapping closure~~
 
 ## License
 
