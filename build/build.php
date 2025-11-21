@@ -98,17 +98,11 @@ class Build {
  */
 $parts [] = Build::read_and_remove_php('/lib/escaper.php');
 
-// $parts [] = "namespace Adamkiss\Toolkit\Dependencies {
-//     use Exception;
-//     use DOMDocument;
-//     use DOMElement;
-//     use stdClass;
-// ";
-// $parts [] = Build::read_and_remove_php();
-// // fix
-// $parts [] = Build::remove_php(F::read($ROOT . '/kirby/dependencies/parsedown-extra/ParsedownExtra.php'));
-// $parts [] = Build::remove_php(F::read($ROOT . '/kirby/dependencies/spyc/Spyc.php'));
-// $parts [] = '}';
+$parts [] = "namespace {";
+$parts [] = Build::read_and_remove_php('lib/parsedown/Parsedown.php');
+$parts [] = Build::read_and_remove_php('lib/parsedown-extra/ParsedownExtra.php');
+$parts [] = Build::read_and_remove_php('lib/spyc/Spyc.php');
+$parts [] = '}';
 
 $__ = Build::read_and_remove_php('/vendor/claviska/simpleimage/src/claviska/SimpleImage.php');
 $parts [] = Build::expand_namespace($__);
