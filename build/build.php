@@ -113,12 +113,17 @@ $parts [] = Build::read_and_remove_php('/lib/escaper.php');
 $__ = Build::read_and_remove_php('/vendor/claviska/simpleimage/src/claviska/SimpleImage.php');
 $parts [] = Build::expand_namespace($__);
 
+$mocks = Build::get_dir_contents('/lib/CmsMocks');
+$parts = array_merge($parts, array_values($mocks));
+
 /**
  * Get the Kirby Toolkit files
  */
 $files = Build::get_full_tree_contents('/src');
 $sort_values = fn($file) => match($file) {
 	'src/iterator.php' => 100,
+	'src/sane/domhandler.php' => 501,
+	'src/sane/xml.php' => 505,
 	default => 1000,
 };
 uksort($files, fn($a, $b) => $sort_values($a) <=> $sort_values($b));
