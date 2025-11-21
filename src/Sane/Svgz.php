@@ -19,16 +19,21 @@ class Svgz extends Svg
 	/**
 	 * Sanitizes the given string
 	 *
+	 * @param bool $isExternal Whether the string is from an external file
+	 *                         that may be accessed directly
+	 *
 	 * @throws \Adamkiss\Toolkit\Exception\InvalidArgumentException If the file couldn't be parsed or recompressed
 	 */
-	public static function sanitize(string $string): string
-	{
+	public static function sanitize(
+		string $string,
+		bool $isExternal = false
+	): string {
 		$string = static::uncompress($string);
-		$string = parent::sanitize($string);
+		$string = parent::sanitize($string, $isExternal);
 		$string = @gzencode($string);
 
 		if (is_string($string) !== true) {
-			throw new InvalidArgumentException('Could not recompress gzip data'); // @codeCoverageIgnore
+			throw new InvalidArgumentException(message: 'Could not recompress gzip data'); // @codeCoverageIgnore
 		}
 
 		return $string;
@@ -37,12 +42,18 @@ class Svgz extends Svg
 	/**
 	 * Validates file contents
 	 *
+	 * @param bool $isExternal Whether the string is from an external file
+	 *                         that may be accessed directly
+	 *
 	 * @throws \Adamkiss\Toolkit\Exception\InvalidArgumentException If the file couldn't be parsed
 	 * @throws \Adamkiss\Toolkit\Exception\InvalidArgumentException If the file didn't pass validation
 	 */
-	public static function validate(string $string): void
-	{
-		parent::validate(static::uncompress($string));
+	public static function validate(
+		string $string,
+		bool $isExternal = false
+	): void {
+		$string = static::uncompress($string);
+		parent::validate($string, $isExternal);
 	}
 
 	/**
@@ -55,7 +66,9 @@ class Svgz extends Svg
 		$string = @gzdecode($string, 10000000);
 
 		if (is_string($string) !== true) {
-			throw new InvalidArgumentException('Could not uncompress gzip data');
+			throw new InvalidArgumentException(
+				message: 'Could not uncompress gzip data'
+			);
 		}
 
 		return $string;

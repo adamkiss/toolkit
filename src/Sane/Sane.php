@@ -5,6 +5,7 @@ namespace Adamkiss\Toolkit\Sane;
 use Adamkiss\Toolkit\Exception\LogicException;
 use Adamkiss\Toolkit\Exception\NotFoundException;
 use Adamkiss\Toolkit\Filesystem\F;
+use Adamkiss\Toolkit\A;
 
 /**
  * The `Sane` class validates that files
@@ -36,10 +37,10 @@ class Sane
 	 * All registered handlers
 	 */
 	public static array $handlers = [
-		'html' => 'Adamkiss\Toolkit\Sane\Html',
-		'svg'  => 'Adamkiss\Toolkit\Sane\Svg',
-		'svgz' => 'Adamkiss\Toolkit\Sane\Svgz',
-		'xml'  => 'Adamkiss\Toolkit\Sane\Xml',
+		'html' => Html::class,
+		'svg'  => Svg::class,
+		'svgz' => Svgz::class,
+		'xml'  => Xml::class,
 	];
 
 	/**
@@ -49,16 +50,19 @@ class Sane
 	 *
 	 * @throws \Adamkiss\Toolkit\Exception\NotFoundException If no handler was found and `$lazy` was set to `false`
 	 */
-	public static function handler(string $type, bool $lazy = false): Handler|null
-	{
+	public static function handler(
+		string $type,
+		bool $lazy = false
+	): Handler|null {
 		// normalize the type
 		$type = mb_strtolower($type);
 
 		// find a handler or alias
-		$alias   = static::$aliases[$type] ?? null;
-		$handler =
-			static::$handlers[$type] ??
-			($alias ? static::$handlers[$alias] ?? null : null);
+		$handler = static::$handlers[$type] ?? null;
+
+		if ($alias = static::$aliases[$type] ?? null) {
+			$handler ??= static::$handlers[$alias] ?? null;
+		}
 
 		if (empty($handler) === false && class_exists($handler) === true) {
 			return new $handler();
@@ -68,16 +72,24 @@ class Sane
 			return null;
 		}
 
-		throw new NotFoundException('Missing handler for type: "' . $type . '"');
+		throw new NotFoundException(
+			message: 'Missing handler for type: "' . $type . '"'
+		);
 	}
 
 	/**
 	 * Sanitizes the given string with the specified handler
 	 * @since 3.6.0
+	 *
+	 * @param bool $isExternal Whether the string is from an external file
+	 *                         that may be accessed directly
 	 */
-	public static function sanitize(string $string, string $type): string
-	{
-		return static::handler($type)->sanitize($string);
+	public static function sanitize(
+		string $string,
+		string $type,
+		bool $isExternal = false
+	): string {
+		return static::handler($type)->sanitize($string, $isExternal);
 	}
 
 	/**
@@ -96,8 +108,10 @@ class Sane
 	 * @throws \Adamkiss\Toolkit\Exception\NotFoundException If the handler was not found
 	 * @throws \Adamkiss\Toolkit\Exception\Exception On other errors
 	 */
-	public static function sanitizeFile(string $file, string|bool $typeLazy = false): void
-	{
+	public static function sanitizeFile(
+		string $file,
+		string|bool $typeLazy = false
+	): void {
 		if (is_string($typeLazy) === true) {
 			static::handler($typeLazy)->sanitizeFile($file);
 			return;
@@ -115,10 +129,9 @@ class Sane
 			default:
 				// more than one matching handler;
 				// sanitizing with all handlers will not leave much in the output
-				$handlerNames = array_map('get_class', $handlers);
 				throw new LogicException(
 					'Cannot sanitize file as more than one handler applies: ' .
-					implode(', ', $handlerNames)
+					implode(', ', A::map($handlers, fn ($handler) => $handler::class))
 				);
 		}
 	}
@@ -126,13 +139,16 @@ class Sane
 	/**
 	 * Validates file contents with the specified handler
 	 *
+	 * @param bool $isExternal Whether the string is from an external file
+	 *                         that may be accessed directly
+	 *
 	 * @throws \Adamkiss\Toolkit\Exception\InvalidArgumentException If the file didn't pass validation
 	 * @throws \Adamkiss\Toolkit\Exception\NotFoundException If the handler was not found
 	 * @throws \Adamkiss\Toolkit\Exception\Exception On other errors
 	 */
-	public static function validate(string $string, string $type): void
+	public static function validate(string $string, string $type, bool $isExternal = false): void
 	{
-		static::handler($type)->validate($string);
+		static::handler($type)->validate($string, $isExternal);
 	}
 
 	/**
@@ -148,14 +164,18 @@ class Sane
 	 * @throws \Adamkiss\Toolkit\Exception\NotFoundException If the handler was not found
 	 * @throws \Adamkiss\Toolkit\Exception\Exception On other errors
 	 */
-	public static function validateFile(string $file, string|bool $typeLazy = false): void
-	{
+	public static function validateFile(
+		string $file,
+		string|bool $typeLazy = false
+	): void {
 		if (is_string($typeLazy) === true) {
 			static::handler($typeLazy)->validateFile($file);
 			return;
 		}
 
-		foreach (static::handlersForFile($file, $typeLazy === true) as $handler) {
+		$handlers = static::handlersForFile($file, $typeLazy === true);
+
+		foreach ($handlers as $handler) {
 			$handler->validateFile($file);
 		}
 	}
@@ -167,8 +187,10 @@ class Sane
 	 * @param bool $lazy If set to `true`, undefined handlers are skipped
 	 * @return array<\Adamkiss\Toolkit\Sane\Handler>
 	 */
-	protected static function handlersForFile(string $file, bool $lazy = false): array
-	{
+	protected static function handlersForFile(
+		string $file,
+		bool $lazy = false
+	): array {
 		$handlers = $handlerClasses = [];
 
 		// all values that can be used for the handler search;
@@ -177,10 +199,13 @@ class Sane
 
 		foreach ($options as $option) {
 			$handler      = static::handler($option, $lazy);
-			$handlerClass = $handler ? get_class($handler) : null;
+			$handlerClass = $handler ? $handler::class : null;
 
 			// ensure that each handler class is only returned once
-			if ($handler && in_array($handlerClass, $handlerClasses) === false) {
+			if (
+				$handler &&
+				in_array($handlerClass, $handlerClasses, true) === false
+			) {
 				$handlers[]       = $handler;
 				$handlerClasses[] = $handlerClass;
 			}

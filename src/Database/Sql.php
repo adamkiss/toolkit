@@ -23,11 +23,6 @@ abstract class Sql
 	public static array $literals = ['NOW()', null];
 
 	/**
-	 * The parent database connection
-	 */
-	protected Database $database;
-
-	/**
 	 * List of used bindings; used to avoid
 	 * duplicate binding names
 	 */
@@ -37,9 +32,9 @@ abstract class Sql
 	 * Constructor
 	 * @codeCoverageIgnore
 	 */
-	public function __construct(Database $database)
-	{
-		$this->database = $database;
+	public function __construct(
+		protected Database $database
+	) {
 	}
 
 	/**
@@ -60,7 +55,7 @@ abstract class Sql
 		// generate random bindings until the name is unique
 		do {
 			$binding = ':' . $label . '_' . Str::random(8, 'alphaNum');
-		} while (in_array($binding, $this->bindings) === true);
+		} while (in_array($binding, $this->bindings, true) === true);
 
 		// cache the generated binding name for future invocations
 		$this->bindings[] = $binding;
@@ -109,14 +104,22 @@ abstract class Sql
 	 * @param bool $enforceQualified If true, a qualified identifier is returned in all cases
 	 * @return string|null Identifier or null if the table or column is invalid
 	 */
-	public function columnName(string $table, string $column, bool $enforceQualified = false): string|null
-	{
-		// ensure we have clean $table and $column values without qualified identifiers
-		list($table, $column) = $this->splitIdentifier($table, $column);
+	public function columnName(
+		string $table,
+		string $column,
+		bool $enforceQualified = false
+	): string|null {
+		// ensure we have clean $table and $column values
+		// without qualified identifiers
+		[$table, $column] = $this->splitIdentifier($table, $column);
 
 		// combine the identifiers again
 		if ($this->database->validateColumn($table, $column) === true) {
-			return $this->combineIdentifier($table, $column, $enforceQualified !== true);
+			return $this->combineIdentifier(
+				$table,
+				$column,
+				$enforceQualified !== true
+			);
 		}
 
 		// the table or column does not exist
@@ -132,22 +135,27 @@ abstract class Sql
 	{
 		return [
 			'id'        => '{{ name }} INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY',
-			'varchar'   => '{{ name }} varchar(255) {{ null }} {{ default }} {{ unique }}',
+			'varchar'   => '{{ name }} varchar({{ size }}) {{ null }} {{ default }} {{ unique }}',
 			'text'      => '{{ name }} TEXT {{ unique }}',
-			'int'       => '{{ name }} INT(11) UNSIGNED {{ null }} {{ default }} {{ unique }}',
+			'int'       => '{{ name }} INT(11) {{ unsigned }} {{ null }} {{ default }} {{ unique }}',
 			'timestamp' => '{{ name }} TIMESTAMP {{ null }} {{ default }} {{ unique }}',
-			'bool'      => '{{ name }} TINYINT(1) {{ null }} {{ default }} {{ unique }}'
+			'bool'      => '{{ name }} TINYINT(1) {{ null }} {{ default }} {{ unique }}',
+			'float'     => '{{ name }} DOUBLE {{ null }} {{ default }} {{ unique }}',
+			'decimal'   => '{{ name }} DECIMAL({{ precision }}, {{ decimalPlaces }}) {{ null }} {{ default }} {{ unique }}'
 		];
 	}
 
 	/**
 	 * Combines an identifier (table and column)
 	 *
-	 * @param $values bool Whether the identifier is going to be used for a VALUES clause;
-	 *                        only relevant for SQLite
+	 * @param bool $values Whether the identifier is going to be used for a VALUES clause;
+	 *                     only relevant for SQLite
 	 */
-	public function combineIdentifier(string $table, string $column, bool $values = false): string
-	{
+	public function combineIdentifier(
+		string $table,
+		string $column,
+		bool $values = false
+	): string {
 		return $this->quoteIdentifier($table) . '.' . $this->quoteIdentifier($column);
 	}
 
@@ -157,6 +165,10 @@ abstract class Sql
 	 * @param string $name Column name
 	 * @param array $column Column definition array; valid keys:
 	 *                      - `type` (required): Column template to use
+	 *                      - `unsigned`: Whether an int column is signed or unsigned (boolean)
+	 *                      - `size`: The size of varchar (int)
+	 *                      - `precision`: The precision of a decimal type
+	 *                      - `decimalPlaces`: The number of decimal places for a decimal type
 	 *                      - `null`: Whether the column may be NULL (boolean)
 	 *                      - `key`: Index this column is part of; special values `'primary'` for PRIMARY KEY and `true` for automatic naming
 	 *                      - `unique`: Whether the index (or if not set the column itself) has a UNIQUE constraint
@@ -168,11 +180,17 @@ abstract class Sql
 	{
 		// column type
 		if (isset($column['type']) === false) {
-			throw new InvalidArgumentException('No column type given for column ' . $name);
+			throw new InvalidArgumentException(
+				message: 'No column type given for column ' . $name
+			);
 		}
+
 		$template = $this->columnTypes()[$column['type']] ?? null;
+
 		if (!$template) {
-			throw new InvalidArgumentException('Unsupported column type: ' . $column['type']);
+			throw new InvalidArgumentException(
+				message: 'Unsupported column type: ' . $column['type']
+			);
 		}
 
 		// null option
@@ -191,10 +209,24 @@ abstract class Sql
 			}
 		}
 
+		// unsigned (defaults to true for backwards compatibility)
+		if (
+			isset($column['unsigned']) === true &&
+			$column['unsigned'] === false
+		) {
+			$unsigned = '';
+		} else {
+			$unsigned = 'UNSIGNED';
+		}
+
 		// unique
 		$uniqueKey = false;
 		$uniqueColumn = null;
-		if (isset($column['unique']) === true && $column['unique'] === true) {
+
+		if (
+			isset($column['unique']) === true &&
+			$column['unique'] === true
+		) {
 			if (isset($column['key']) === true) {
 				// this column is part of an index, make that unique
 				$uniqueKey = true;
@@ -208,11 +240,15 @@ abstract class Sql
 		$columnDefault = $this->columnDefault($name, $column);
 
 		$query = trim(Str::template($template, [
-			'name'    => $this->quoteIdentifier($name),
-			'null'    => $null,
-			'default' => $columnDefault['query'],
-			'unique'  => $uniqueColumn
-		], ['fallback' => '']));
+			'name'           => $this->quoteIdentifier($name),
+			'unsigned'       => $unsigned,
+			'size'           => $column['size'] ?? 255,
+			'precision'      => $column['precision'] ?? 14,
+			'decimalPlaces'  => $column['decimalPlaces'] ?? 4,
+			'null'           => $null,
+			'default'        => $columnDefault['query'],
+			'unique'         => $uniqueColumn
+		], ['fallback'  => '']));
 
 		return [
 			'query'    => $query,
@@ -239,7 +275,7 @@ abstract class Sql
 			$sql = $this->createColumn($name, $column);
 
 			// collect query and bindings
-			$query[] = $sql['query'];
+			$query[]   = $sql['query'];
 			$bindings += $sql['bindings'];
 
 			// make a list of keys per key name
@@ -249,6 +285,7 @@ abstract class Sql
 				}
 
 				$keys[$sql['key']][] = $name;
+
 				if ($sql['unique'] === true) {
 					$unique[$sql['key']] = true;
 				}
@@ -285,8 +322,8 @@ abstract class Sql
 			if ($key === 'primary') {
 				$key = 'PRIMARY KEY';
 			} else {
-				$unique = isset($inner['unique'][$key]) === true ? 'UNIQUE ' : '';
-				$key = $unique . 'INDEX ' . $this->quoteIdentifier($key);
+				$unique = isset($inner['unique'][$key]) ? 'UNIQUE ' : '';
+				$key    = $unique . 'INDEX ' . $this->quoteIdentifier($key);
 			}
 
 			$inner['query'] .= ',' . PHP_EOL . $key . ' (' . $columns . ')';
@@ -305,13 +342,13 @@ abstract class Sql
 	 */
 	public function delete(array $params = []): array
 	{
-		$defaults = [
+		$options = [
 			'table'    => '',
 			'where'    => null,
-			'bindings' => []
+			'bindings' => [],
+			...$params
 		];
 
-		$options  = array_merge($defaults, $params);
 		$bindings = $options['bindings'];
 		$query    = ['DELETE'];
 
@@ -342,11 +379,14 @@ abstract class Sql
 	 * Extends a given query and bindings
 	 * by reference
 	 */
-	public function extend(array &$query, array &$bindings, array $input): void
-	{
+	public function extend(
+		array &$query,
+		array &$bindings,
+		array $input
+	): void {
 		if (empty($input['query']) === false) {
 			$query[]  = $input['query'];
-			$bindings = array_merge($bindings, $input['bindings']);
+			$bindings = [...$bindings, ...$input['bindings']];
 		}
 	}
 
@@ -402,7 +442,11 @@ abstract class Sql
 		$query    = ['INSERT INTO ' . $this->tableName($table)];
 
 		// add the values
-		$this->extend($query, $bindings, $this->values($table, $values, ', ', false));
+		$this->extend(
+			$query,
+			$bindings,
+			$this->values($table, $values, ', ', false)
+		);
 
 		return [
 			'query'    => $this->query($query),
@@ -435,8 +479,10 @@ abstract class Sql
 		$type = strtoupper(trim($type));
 
 		// validate join type
-		if (in_array($type, $types) === false) {
-			throw new InvalidArgumentException('Invalid join type ' . $type);
+		if (in_array($type, $types, true) === false) {
+			throw new InvalidArgumentException(
+				message: 'Invalid join type ' . $type
+			);
 		}
 
 		return [
@@ -454,7 +500,15 @@ abstract class Sql
 		$bindings = [];
 
 		foreach ((array)$joins as $join) {
-			$this->extend($query, $bindings, $this->join($join['type'] ?? 'JOIN', $join['table'] ?? null, $join['on'] ?? null));
+			$this->extend(
+				$query,
+				$bindings,
+				$this->join(
+					$join['type'] ?? 'JOIN',
+					$join['table'] ?? null,
+					$join['on'] ?? null
+				)
+			);
 		}
 
 		return [
@@ -538,7 +592,7 @@ abstract class Sql
 	 */
 	public function select(array $params = []): array
 	{
-		$defaults = [
+		$options = [
 			'table'    => '',
 			'columns'  => '*',
 			'join'     => null,
@@ -549,10 +603,10 @@ abstract class Sql
 			'order'    => null,
 			'offset'   => 0,
 			'limit'    => null,
-			'bindings' => []
+			'bindings' => [],
+			...$params
 		];
 
-		$options  = array_merge($defaults, $params);
 		$bindings = $options['bindings'];
 		$query    = ['SELECT'];
 
@@ -607,7 +661,7 @@ abstract class Sql
 			$result = [];
 
 			foreach ($columns as $column) {
-				list($table, $columnPart) = $this->splitIdentifier($table, $column);
+				[$table, $columnPart] = $this->splitIdentifier($table, $column);
 
 				if ($this->validateColumn($table, $columnPart) === true) {
 					$result[] = $this->combineIdentifier($table, $columnPart);
@@ -642,7 +696,9 @@ abstract class Sql
 			],
 
 			// every other number is an error
-			default => throw new InvalidArgumentException('Invalid identifier ' . $identifier)
+			default => throw new InvalidArgumentException(
+				message: 'Invalid identifier ' . $identifier
+			)
 		};
 	}
 
@@ -661,7 +717,9 @@ abstract class Sql
 	{
 		// validate table
 		if ($this->database->validateTable($table) === false) {
-			throw new InvalidArgumentException('Invalid table ' . $table);
+			throw new InvalidArgumentException(
+				message: 'Invalid table ' . $table
+			);
 		}
 
 		return $this->quoteIdentifier($table);
@@ -673,11 +731,17 @@ abstract class Sql
 	public function unquoteIdentifier(string $identifier): string
 	{
 		// remove quotes around the identifier
-		if (in_array(Str::substr($identifier, 0, 1), ['"', '`']) === true) {
+		if (
+			str_starts_with($identifier, '"') ||
+			str_starts_with($identifier, '`')
+		) {
 			$identifier = Str::substr($identifier, 1);
 		}
 
-		if (in_array(Str::substr($identifier, -1), ['"', '`']) === true) {
+		if (
+			str_ends_with($identifier, '"') ||
+			str_ends_with($identifier, '`')
+		) {
 			$identifier = Str::substr($identifier, 0, -1);
 		}
 
@@ -692,24 +756,32 @@ abstract class Sql
 	 */
 	public function update(array $params = []): array
 	{
-		$defaults = [
+		$options = [
 			'table'    => null,
 			'values'   => null,
 			'where'    => null,
-			'bindings' => []
+			'bindings' => [],
+			...$params
 		];
 
-		$options  = array_merge($defaults, $params);
 		$bindings = $options['bindings'];
 
 		// start the query
 		$query = ['UPDATE ' . $this->tableName($options['table']) . ' SET'];
 
 		// add the values
-		$this->extend($query, $bindings, $this->values($options['table'], $options['values']));
+		$this->extend(
+			$query,
+			$bindings,
+			$this->values($options['table'], $options['values'])
+		);
 
 		// add the where clause
-		$this->extend($query, $bindings, $this->where($options['where']));
+		$this->extend(
+			$query,
+			$bindings,
+			$this->where($options['where'])
+		);
 
 		return [
 			'query'    => $this->query($query),
@@ -725,7 +797,9 @@ abstract class Sql
 	public function validateColumn(string $table, string $column): bool
 	{
 		if ($this->database->validateColumn($table, $column) !== true) {
-			throw new InvalidArgumentException('Invalid column ' . $column);
+			throw new InvalidArgumentException(
+				message: 'Invalid column ' . $column
+			);
 		}
 
 		return true;
@@ -755,10 +829,20 @@ abstract class Sql
 		}
 
 		if ($set === true) {
-			return $this->valueSet($table, $values, $separator, $enforceQualified);
+			return $this->valueSet(
+				$table,
+				$values,
+				$separator,
+				$enforceQualified
+			);
 		}
 
-		return $this->valueList($table, $values, $separator, $enforceQualified);
+		return $this->valueList(
+			$table,
+			$values,
+			$separator,
+			$enforceQualified
+		);
 	}
 
 	/**
@@ -865,10 +949,9 @@ abstract class Sql
 		$query = [];
 
 		foreach ($where as $key => $value) {
-			$binding = $this->bindingName('where_' . $key);
+			$binding            = $this->bindingName('where_' . $key);
 			$bindings[$binding] = $value;
-
-			$query[] = $key . ' = ' . $binding;
+			$query[]            = $key . ' = ' . $binding;
 		}
 
 		return [
