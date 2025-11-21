@@ -7,6 +7,9 @@ on:
       - 1.*
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   release:
     timeout-minutes: 90
@@ -31,15 +34,9 @@ jobs:
       with:
         name: ${{ env.artifact_name }}
         path: ${{ env.artifact_path }}
-    - name: Get the latest tag
-      id: get_latest_tag
-      run: |
-        latest_tag=$(git describe --abbrev=0 --tags)
-        echo "latest_tag=$latest_tag" >> $GITHUB_ENV
-    - name: Add file to the latest tag
-      uses: SierraSoftworks/gh-releases@v1.0.8
+    - name: Create release from the latest tag
+      uses: softprops/action-gh-release@v2.4.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         files: ${{ env.artifact_path }}
-        overwrite: true
-        release_tag: ${{ env.latest_tag }}
