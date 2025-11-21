@@ -133,7 +133,8 @@ $parts = array_merge($parts, array_values($files));
 /**
  * Build the single file
  */
+$version = shell_exec('git describe --tags --abbrev=0');
 F::write(
-	sprintf('%s/dist/toolkit-%s.php', Build::ROOT, json_decode(F::read(Build::ROOT . '/composer.json'))->version),
+	Build::ROOT . '/dist/toolkit-' . trim($version) . '.php',
 	A::join($parts, "\n")
 );
