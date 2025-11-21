@@ -20,8 +20,12 @@ This is a running list of changes implemented/maintained in the fork
 
 **November 2025**
 - based on Kirby 5.1.3
-- changed namespace to `Adamkiss\Toolkit` (TODO)
-- wrapped each file in an enclosed namespace to ease the single file build (TODO)
+- changed namespace to `Adamkiss\Toolkit`
+- written a build action that:
+	- includes dependencies
+	- includes mocks for proprietary parts of Kirby called from toolkit (those toolkit parts won't work)
+	- outputs `./dist/toolkit-{version}.php`
+- modified `Adamkiss\Toolkit\A::map` to provide keys along with values to the mapping closure
 
 ## License
 

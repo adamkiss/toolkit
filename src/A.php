@@ -466,7 +466,7 @@ class A
 	 */
 	public static function map(array $array, callable $map): array
 	{
-		return array_map($map, $array);
+		return array_map($map, $array, array_keys($array));
 	}
 
 	public const MERGE_OVERWRITE = 0;
