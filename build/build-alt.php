@@ -64,32 +64,50 @@ class Build {
 		return [$modified, $uses];
 	}
 
-	public static function get_dir_contents(string $path): array {
+	public static function get_dir_contents_and_uses(string $path): array {
 		$path = ltrim($path, '/');
-
 		$files = Dir::files(Build::ROOT . '/' . $path);
-		$files = A::keyBy($files, fn($f) => Str::lower("{$path}/{$f}"));
+
+		$namespace = Build::capture_namespace(F::read(Build::ROOT . "/{$path}/{$files[0]}"));
+		$uses = [];
 
 		$all = A::map($files, function ($f) use ($path, &$uses) {
 			$__ = Build::read_and_remove_php("{$path}/{$f}");
-			$source = Build::expand_namespace($__);
+			$__ = Build::remove_namespace($__);
+			[$__, $file_uses] = Build::capture_and_remove_uses($__);
+
+			$source = trim($__);
+			$uses = array_merge($uses, $file_uses);
 
 			return $source;
 		});
 
-		return $all;
+		$contents = sprintf(<<<'PHP'
+			namespace %s {
+				%s
+			}
+			PHP,
+			$namespace,
+			A::join($all, "\n\n")
+		);
+		return [$contents, $uses];
 	}
 
 	public static function get_full_tree_contents(string $path): array {
 		$path = ltrim($path, '/');
-		$all = self::get_dir_contents($path);
+
+		[$contents, $uses] = self::get_dir_contents_and_uses($path);
+
+		$all = [$contents];
 
 		$dirs = Dir::dirs(Build::ROOT . '/' . $path);
 		foreach ($dirs as $d) {
-			$all = array_merge($all, self::get_full_tree_contents("{$path}/{$d}"));
+			[$dir_contents, $dir_uses] = self::get_full_tree_contents("{$path}/{$d}");
+			$all = array_merge($all, $dir_contents);
+			$uses = array_merge($uses, $dir_uses);
 		}
 
-		return $all;
+		return [$all, $uses];
 	}
 }
 
@@ -114,16 +132,30 @@ $__ = Build::read_and_remove_php('/vendor/claviska/simpleimage/src/claviska/Simp
 $parts [] = Build::expand_namespace($__);
 
 /**
- * Get the Kirby Toolkit files
+ * Get the Kirby Toolkit contents and uses
  */
-$files = Build::get_full_tree_contents('/src');
-$sort_values = fn($file) => match($file) {
-	'src/iterator.php' => 100,
-	default => 1000,
-};
-uksort($files, fn($a, $b) => $sort_values($a) <=> $sort_values($b));
+[$toolkit_contents, $toolkit_uses] = Build::get_full_tree_contents('/src');
 
-$parts = array_merge($parts, array_values($files));
+/*
+	Compile `use` statements
+	- unique
+	- replace PHP Exceptions with Toolkit Exceptions
+	- sort by namespace depth and alphabetically
+*/
+$uses = array_unique($toolkit_uses);
+$uses = A::map($uses, fn ($u) => match($u) {
+	'Exception' => 'Adamkiss\Toolkit\Exception\Exception',
+	'InvalidArgumentException' => 'Adamkiss\Toolkit\Exception\InvalidArgumentException',
+	default => $u,
+});
+usort($uses, fn ($a, $b) => match(substr_count($a, '\\') <=> substr_count($b, '\\')) {
+	0 => strcmp($a, $b),
+	default => substr_count($a, '\\') <=> substr_count($b, '\\'),
+});
+$parts [] = A::join(A::map($uses, fn ($u) => "use {$u};"), "\n");
+
+/* Now add the contents */
+$parts = array_merge($parts, $toolkit_contents);
 
 /**
  * Build the single file
